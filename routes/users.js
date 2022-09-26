@@ -1,6 +1,6 @@
 import express from "express"
-// import { deleteUser, getUser, getUsers, updateUser } from "../controllers/user.js";
-import { verifyToken } from "../utils/verifyToken.js";
+ import { deleteUser, getUser, getUsers, updateUser } from "../controllers/user.js";
+import { verifyAdmin, verifyToken,verifyUser } from "../utils/verifyToken.js";
 
 const router = express.Router()
 
@@ -8,17 +8,24 @@ router.get("/checkauthentication",verifyToken,(req,res,next)=>{
     res.send("Hello user you are authenticated")
 })
 
-//Delete HOTEL
 
-// router.delete("/:id", deleteUser);
+router.get("/checkuser/:id",verifyUser,(req,res,next)=>{
+    res.send("Hello  use can perform this action")
+})
 
-// //UPDATE HOTELS
-// router.put("/:id", updateUser);
 
-// //Get HOTEL
-// router.get("/:id", getUser);
+router.get("/checkadmin/:id",verifyAdmin,(req,res,next)=>{
+    res.send("Hello  use can perform this action since you are an admin")
+})
 
-// //Get ALL HOTELS
-// router.get("/", getUsers);
+
+
+router.delete("/:id",verifyUser, deleteUser);
+
+router.put("/:id",verifyUser, updateUser);
+
+router.get("/:id",verifyUser, getUser);
+
+router.get("/",verifyAdmin, getUsers);
 
 export default router
